@@ -41,15 +41,18 @@ class Media(Base):
     id = Column(Integer, primary_key=True)
     type_of_media = Column(String)
     url = Column(String)
-    post_id = Column(Integer)
+    post_id = Column(Integer, ForeignKey('post.user_id'))
 
 
 class Coments(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
     comment_text = Column(String)
-    author_id = Column(Integer) 
-    post_id = Column(Integer) 
+    author_id = Column(Integer, ForeignKey('user.id')) 
+    post_id = Column(Integer, ForeignKey('post.id')) 
+
+    authory = relationship(Users)
+    post_comments = relationship(Posts)
 
 
 

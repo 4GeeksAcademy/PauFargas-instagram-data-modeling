@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
@@ -21,8 +21,8 @@ class Users(Base):
 class Followers(Base):
     __tablename__= 'follower'
     id = Column(Integer, primary_key=True)
-    user_from_id = Column(Integer, ForeignKey('user'))
-    user_to_id = Column(Integer, ForeignKey('user'))
+    followers_id = Column(Integer, ForeignKey('user.id'))
+    following_id = Column(Integer, ForeignKey('user.id'))
 
     user_from = relationship(Users)
     user_to = relationship(Users)
@@ -32,22 +32,17 @@ class Posts(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
+    type_of_media = Column(String)
+    url = Column(String)
 
     post_rel = relationship(Users)
 
-
-class Media(Base):
-    __tablename__='media'
-    id = Column(Integer, primary_key=True)
-    type_of_media = Column(String)
-    url = Column(String)
-    post_id = Column(Integer, ForeignKey('post.user_id'))
 
 
 class Coments(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
-    comment_text = Column(String)
+    comment_text = Column(String(250))
     author_id = Column(Integer, ForeignKey('user.id')) 
     post_id = Column(Integer, ForeignKey('post.id')) 
 
